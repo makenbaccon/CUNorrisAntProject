@@ -1,0 +1,45 @@
+breed [middens midden] ;; midden workers
+
+middens-own[
+  permenant   ;; 1 0 status of if previously a nest-patroller
+  hands-full  ;; 1 0 status of if carrying object
+  midden-time ;; time as unsucessful midden worker -- NOT IN USE YET 
+]
+
+to middens-task
+  
+  nest-walk                           ;;only wander in radius of nest
+  
+  if pcolor = white                   ;;found midden
+  [
+    set hands-full 1
+    set color white
+    process-patch xcor ycor           ;;remove the appropriate midden
+  ]
+  
+  if hands-full = 1[                 ;;bring away from nest
+    downhill nest-config
+    rt (random-normal 0 10)
+    
+    if not [in-dish?] of patch-ahead 1  ;;drop off at edge of radius
+    [
+      set hands-full 0
+      set color green
+      set pcolor violet
+      
+    ]
+        
+  ]
+  
+end
+  
+to process-patch [x-location y-location]         ;;makes sure the patch reflect the action of ant -- midden
+    ask patch x-location y-location[
+      set midden-amount (midden-amount - 1)
+    ]
+    
+    if midden-amount = 0 [                       ;;all midden gone - return to black
+      set pcolor black
+    ]
+    
+end

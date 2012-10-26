@@ -1,0 +1,279 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      9500,        270]
+NotebookOptionsPosition[      8332,        223]
+NotebookOutlinePosition[      8675,        238]
+CellTagsIndexPosition[      8632,        235]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["\<\
+Group-level dynamics in harvester ants: yound golonies and the role of \
+patrolling\
+\>", "Title",
+ CellChangeTimes->{{3.530015906694063*^9, 3.5300159313504734`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Abstract:", "Section",
+ CellChangeTimes->{{3.5300159741329203`*^9, 3.53001597622604*^9}}],
+
+Cell["\<\
+The flexibility of colony organization in the red harvester ant, Pogonomyrmex \
+barbatus, was
+investigated in the field in older (about 5 years) and younger (about 2 \
+years) colonies. Perturbations
+affecting nest maintenance work, foraging and patrolling were made singly and \
+in various combinations.
+In both younger and older colonies, events that directly affected only one \
+activity caused changes in the
+numbers of ants engaged in other activities. An increase in patrolling early \
+in the activity period caused
+foraging to decrease later on. Combined perturbations show that in both \
+younger and older colonies, all
+three activities were linked by complex, synergistic interactions: the \
+response to a perturbation affecting
+one activity itself varied, depending on the states of the other activities. \
+The results suggest a more strongly
+homeostatic response to perturbations in older colonies than in younger ones: \
+older colonies appeared to
+respond more consistently to single perturbations, and to decrease foraging \
+less in combined
+perturbations, than did younger ones. Individual workers live only about a \
+year. Thus similarities and
+differences in the flexibilities of colonies 3 or more years apart are \
+organizational rather than a result of the
+accumulated experience of particular individuals. Ontogenetic changes in a \
+colony\[CloseCurlyQuote]s response to
+environmental stress may be ecologically important.\
+\>", "Text",
+ CellChangeTimes->{3.5300159796212344`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+What I hope to find in this article:\
+\>", "Section",
+ CellChangeTimes->{{3.5300160712204733`*^9, 3.5300160769918036`*^9}}],
+
+Cell["\<\
+I am looking for more information on the information chain. More information \
+on the patrollers method would also be usefull.\
+\>", "Text",
+ CellChangeTimes->{{3.530016082317108*^9, 3.5300161251205564`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Gordons questions:", "Section",
+ CellChangeTimes->{{3.5300160610998945`*^9, 3.5300160638960547`*^9}, {
+  3.530016310056134*^9, 3.5300163129993024`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+How does patrolling affect the dynamics of the numbers engaged in different \
+tasks? \
+\>", "Subsection",
+ CellChangeTimes->{{3.5300163196056805`*^9, 3.5300163356906004`*^9}}],
+
+Cell["\<\
+\[OpenCurlyDoubleQuote]Will perturbations that
+directly affect only the early morning patrollers
+cause later changes in the numbers of workers
+doing other tasks? How will the level of disturbance
+affect the intensity of foraging? Are connections
+among other tasks modulated by events affecting
+patrolling; that is, will combined perturbations
+involving patrolling show non-additive effects?\[CloseCurlyDoubleQuote]\
+\>", "Text",
+ CellChangeTimes->{{3.5300173263112607`*^9, 3.530017335671796*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Boiled down: when do activities in colonies start to become interconnected \
+(age whise) \
+\>", "Subsection",
+ CellChangeTimes->{{3.5300176840117197`*^9, 3.530017704921916*^9}}],
+
+Cell["\<\
+Are different activities
+already inter-dependent in 2-year-old colonies, and
+in what ways? Do events affecting one activity
+change the numbers of workers engaged in other
+tasks? If so, are numerical relations between activities
+modulated by the extent of environmental
+stress? That is, will combined perturbations lead to
+non-additive effects in younger colonies?\
+\>", "Text",
+ CellChangeTimes->{3.530017719315739*^9}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Notes on the experiment", "Section",
+ CellChangeTimes->{{3.530017750066498*^9, 3.530017754511752*^9}}],
+
+Cell["\<\
+1 July-10 August 1985
+
+37 older colonies and 35 younger ones
+
+The colonies to be used in the experiments was based on the measurements of: \
+nest size, cleared area (measured as the distance between the closest two \
+ushes stradling the nest enterance), area covered with pebbles, width of \
+cleared foraging trails. The colonies age was then estimated by comparing \
+measures of the nest zise with thos colonies with large well established \
+nests in 1981 (were 5 years old). 
+
+The mean cleared distance for older colonies was 137.4 cm, for young colonies \
+it was 66.3 cm. 
+
+The mean foraging trail for older colonies was 9.4 cm and for younger \
+colonies it was 6.9 cm\
+\>", "Text",
+ CellChangeTimes->{{3.5300177587089925`*^9, 3.5300177865995874`*^9}, {
+  3.530039534514126*^9, 3.53003973704171*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Pertubations", "Subsection",
+ CellChangeTimes->{{3.5300401155163574`*^9, 3.5300401194525824`*^9}}],
+
+Cell["\<\
+Three types of pertubations were made: 
+\tNest maintenence activity was increased by placing a pile of toothpicks \
+near the nest entrance, which nest maintenance workers carried to the eadges \
+of the nest mound and then ignored. 
+\tThe number of foracers were decreased by placing plastic bariers on the \
+foraging trails that the ants could only bypass with some duificulty \
+(discription of barriers in Gordon 1986.
+\tTo examine Patroling a thrid pertubation consisting of two simultanious \
+minipulations, referred to jointly as \[OpenCurlyDoubleQuote]commotion\
+\[CloseCurlyDoubleQuote] was introduced. First, alien ants (a different \
+species I dont want to speel out, will call it NC) were collected with an \
+aspirator and released on the PB nest mound near the nest entrance at the \
+beginning of the activity piriod when patrollers were first emerging. The NC \
+circled around, were chased by PB workers and were always gone within the \
+hour. NC is active at night and while ants do occasionally venture onto \
+harvester ant mounds early in the morning they are usually back to their own \
+nests when the patrollers begin. At the same time patrolling was elicited \
+using a small cylinder (5cm\[Cross]4-5cm) attached y a thin wire to a heavier \
+wire stake 7-5 cm high. The wire snake was put deep into the nest mound near \
+the entrance taking care not to go deep enough to cave in any nest chambers. \
+One edge of the cylinder rested on the nest entrance and moved around \
+slightly in the wind. The patrollers inspected it, crawled on it and \
+eventually ignored it \
+\>", "Text",
+ CellChangeTimes->{{3.530040124928896*^9, 3.530040320314071*^9}, {
+  3.53004036365755*^9, 3.530040570843401*^9}}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Context Notes I think will be usefull\
+\>", "Section",
+ CellChangeTimes->{{3.5300174534185305`*^9, 3.5300174604419327`*^9}}],
+
+Cell["\<\
+LATER: Mortality of young colonnies is very high, presubably as a result of \
+competition for food between sympatrick harvester ant species and granivorous \
+rodents. PB colonies seem to become established and their growth rates begin \
+to level off, at about 5 years (gordons personal observation).
+
+LATER: I did perturbation experiments
+using colonies about 2 years old, probably
+containing only one-fifth as many ants as the older
+colonies (MacKay 1981; Markl & Holldobler,
+personal communication). Although it seems to be
+generally true of most ant species that the distribution
+of workers of different age and/or size classes
+changes as a colony matures
+
+\
+\>", "Text",
+ CellChangeTimes->{{3.530017468477392*^9, 3.5300175471588926`*^9}, {
+  3.5300175856210923`*^9, 3.530017608813419*^9}}]
+}, Open  ]]
+}, Open  ]],
+
+Cell["\<\
+CURRENT PROGRESS PAGE 2 ABOUT TO GO INTO METHODS\
+\>", "Title",
+ CellChangeTimes->{{3.5300192189075108`*^9, 3.53001923042017*^9}}]
+},
+WindowSize->{624, 722},
+WindowMargins->{{Automatic, 0}, {0, Automatic}},
+FrontEndVersion->"8.0 for Microsoft Windows (64-bit) (November 13, 2010)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 176, 4, 191, "Title"],
+Cell[CellGroupData[{
+Cell[780, 30, 95, 1, 71, "Section"],
+Cell[878, 33, 1509, 29, 281, "Text"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2424, 67, 133, 3, 71, "Section"],
+Cell[2560, 72, 218, 4, 47, "Text"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2815, 81, 158, 2, 71, "Section"],
+Cell[CellGroupData[{
+Cell[2998, 87, 185, 4, 53, "Subsection"],
+Cell[3186, 93, 506, 10, 155, "Text"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3729, 108, 187, 4, 53, "Subsection"],
+Cell[3919, 114, 429, 10, 155, "Text"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[4397, 130, 108, 1, 71, "Section"],
+Cell[4508, 133, 813, 19, 227, "Text"],
+Cell[CellGroupData[{
+Cell[5346, 156, 104, 1, 36, "Subsection"],
+Cell[5453, 159, 1719, 26, 299, "Text"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7221, 191, 134, 3, 71, "Section"],
+Cell[7358, 196, 803, 18, 263, "Text"]
+}, Open  ]]
+}, Open  ]],
+Cell[8188, 218, 140, 3, 137, "Title"]
+}
+]
+*)
+
+(* End of internal cache information *)

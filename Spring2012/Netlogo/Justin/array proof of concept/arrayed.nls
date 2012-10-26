@@ -1,0 +1,47 @@
+breed [arrays array]
+
+arrays-own
+[
+  
+  groupnumber
+  ;; this indicates which group the agent is in
+  
+]
+
+to arrays-task
+  
+  ;; Wander around inside a radius of the nestcenter:
+  arraymove
+  
+  ;; have a chance of randomly converting to a different group
+  arraychange
+  
+end
+
+to arraymove
+  
+  ;; if they are outside their nest then they need to go home 
+  ifelse distancexy (array:item arraynestcenterx groupnumber)
+  (array:item arraynestcentery groupnumber) > exploreradius
+  [
+    uphill array:item arraygradiant groupnumber
+  ]
+  ;; otherwise they just move aoround doing not much
+  [
+    rt (random-normal 0 30)
+    fd 0.5
+  ]
+  
+end
+
+to arraychange
+  
+  ;; this will not be included for now
+  
+end
+
+to set-array-defaults
+  set color red
+  set shape "cow"
+end
+  

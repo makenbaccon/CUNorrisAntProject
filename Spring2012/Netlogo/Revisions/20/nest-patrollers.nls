@@ -1,0 +1,119 @@
+breed [nest-patrollers nest-patroller]  ;;breed that confirms it is ok to go out of nest
+
+nest-patrollers-own[
+  patrol-completion  ;;timer to see if done with patrolling
+  np-scent
+  time
+  antmates
+  nearest-neighbor 
+]
+
+to nest-patrollers-task  
+  ;;rt (random-normal 0 30)          ;;a walk governed by the normal distribution
+  ;;fd 1
+    
+;   set patrol-completion (patrol-completion + random 9)  ;;return to the nest and finshish nest patrolling when value is > 500
+;   
+;   ifelse patrol-completion > 500 ;;this needs to be adjusted for the size of the world
+;   [
+;     uphill nest-config                         ;;done nest patrolling so become midden worker
+;     
+;     if (pxcor = 0) and (pycor = 0)
+;     [
+;       set hidden? true
+;       set time ticks
+;       nest-patrol-interact
+;       ;;set breed middens
+;       ;;set color green
+;       ;;set permenant 1
+;       set nest-return (nest-return + 1)
+;     ]
+;     
+;   ]
+;   
+;   [
+      nest-walk                         ;;not done patrolling so walk around nest
+;   ]
+         
+end
+
+to nest-walk
+  
+  ifelse [ in-dish? ] of patch-ahead 1
+      [ 
+        fd 0.5
+        rt (random-normal 0 300)          ;;a walk governed by the normal distribution
+      ] ;; ok to go forward
+      
+      ;[uphill nest-config] ;; go toward nest
+      [ set breed trail-patrollers
+        set color yellow
+        set hidden? false             ;;hide them till when they are needed
+        set found-food? false        ;;set default values
+        set active? true
+        set direction 0
+        set scent 0
+        set trail-timer 0
+        stop
+       ]
+      
+end
+
+
+to nest-patrol-interact
+  
+  rt (random-normal 0 30)
+  fd 1
+  
+  set np-scent (coeff * (e ^ (-0.02 * (ticks - time + 1))))       ;;ants that return have a decay of scent
+  
+    find-nearest-neighbor
+  
+  if nearest-neighbor != nobody[                           ;;if there is a neigbor around
+   if  is-inactive? nearest-neighbor
+   [
+    create-link-to nearest-neighbor
+    ask links [ask end2 [set maint-scent [np-scent] of other-end] ]
+    ;;ask links [ask end2 [set food-direction [food-direction] of other-end]]
+    ;;ask link myself nearest-neighbor [die]
+    ;;ask my-links with [ other-end = nearest-neighbor ] [ die ] 
+    ask one-of links [die]
+   ]
+        
+  ]
+  
+   if np-scent < 0.05 * coeff[                                     ;;if scent is 5% of the original leave the nest
+     ;;set food? false                                            ;;set exit flag
+      ;;This is where to send them back out if needed             ;;head toward the exit of the nest
+      
+      
+    uphill nest-config
+    
+    if (xcor = 0) and (ycor = 0)  ;;drop off at nest ;; now need to interact
+    [
+      set breed trail-patrollers
+      set hidden? false
+      ;set hands-full 0
+      ;set color green
+      set color yellow
+      set hidden? false             ;;hide them till when they are needed
+      set found-food? false        ;;set default values
+      set active? true
+      set direction 0
+      set scent 0
+    ]
+  ]  
+;      set breed middens
+;      set hidden? false
+;      set hands-full 0
+;      set color green
+;      set color yellow
+;      set hidden? false             ;;hide them till when they are needed
+;      set found-food? false        ;;set default values
+;      set active? true
+;      set direction 0
+;      set scent 0
+   ;]
+
+  
+end

@@ -1,0 +1,46 @@
+Development of the Computer Model
+
+Choice of language: Netlogo
+	Watch a system over time
+	"agents" logo fondly known as turtles
+	implementation of breeds
+	develop roles for small (individual ant)
+	results of larger (ant colony)
+
+Programming the model
+	Use reasearch for development of breeds and foundation of behavior
+	Fill in the gaps
+
+Program design: state machine
+	only execute relevant code
+	based of breed (net partroller, forager etc..)
+	run really fast
+	
+	visual outside
+	hidden inside
+
+Example behaviors in model:
+	forager
+		(1) if enough food present (reported by trail patrollers) leave nest
+		(2) go in direction of food (information from trail patroller)
+		(3) once far enough outside nest small random walk
+		(4) constantly be looking at the color of ground
+		(5) if matches color of food - take food
+		(6) when have food go back to nest
+		(7) when at nest and have food interact with ants in anty-chamber
+	
+
+
+Details of interaction in the simulation
+	Task is based off of interactions
+	interactions primarily occur in anty-chamber
+	scent is passed from one ant to another
+		once reach certain level start that given task
+	results in waves of ants
+		nest patrollers report successful --> foraging starts
+
+Information gathered from model
+	count of all breeds
+	impact of relaying information
+	food supply
+

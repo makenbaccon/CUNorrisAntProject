@@ -1,0 +1,218 @@
+
+turtles-own[
+  food                 ;;amount of food that the ant is carrying
+  time                 ;;reset of ticks for when ant enters the ant pile
+  scent                ;;the sent of the ant itself
+  nearest-neighbor     ;;the ant that is closest to myself
+  antmates             ;;list of ants in radius 
+  location             ;;keep track of if the ant is inside or outside the antpile
+  task                 ;;the curent objective that the ant is trying to complete
+  exit                 ;;is the ant leaving the nest (1) True (0) False
+]
+
+patches-own [
+  nest-config
+  food-source-number
+  foodp
+]  ;;Property to setup the gradient of patches to get home
+
+to setup
+  clear-all
+  
+  set-default-shape turtles "bug"  ;;make the shape look like an ant
+  
+  crt 100[                          ;;create 10 ants
+    set color red
+    setxyz 0 0 0.5                      ;;move out of the antpile (in order to avioid initial case)
+    set nearest-neighbor "NULL"    ;;
+    set task "find-food"           ;;the first object of the ants outside the nest is to find food
+    set location "outside"         ;;the ants that are looking for food are outside
+  ]
+  
+  crt 100[                          ;;create 10 ants
+    set color white
+    setxyz 0 0 -5                     ;;move in antpile to avoid inital case
+    set nearest-neighbor "NULL"
+    set task "interact"            ;;the objective of the inside ants is to interact
+    set location "inside"          ;;the interacting ants are inside
+  ]
+  
+  setup-ant-hill                   ;;make the anthill and sent the patches
+  
+  make-food                        ;;make food for ants to find
+  
+  do-plots
+  
+end
+
+to make-food
+  ;;repeat 5[
+    ;;ask patch (random-pxcor) (abs (random-pycor)) [set pcolor green]    ;;for 5 POSITIVE patches color green to represent food
+  ;;]
+  ask patches [
+    if (distancexy (0.85 * max-pxcor) 12) < 2 and pzcor = 0
+      [ set food-source-number 1 ]
+      ;; setup food source two on the lower-left
+    if (distancexy (-0.8 * max-pxcor) (-0.6 * max-pycor)) < 3 and pzcor = 0
+      [ set food-source-number 2 ]
+      ;; setup food source three on the upper-left
+    if (distancexy (-0.6 * max-pxcor) (0.7 * max-pycor)) < 2 and pzcor = 0
+      [ set food-source-number 3 ]
+      ;; set "food" at sources to either 1 or 2, randomly
+    if food-source-number > 0
+     [ set foodp 2 ]
+   
+     if foodp > 0       ;; Color food
+      [ if food-source-number = 1 [ set pcolor cyan ]
+        if food-source-number = 2 [ set pcolor sky  ]
+        if food-source-number = 3 [ set pcolor blue ] 
+        if food-source-number = 4 [ set pcolor red  ] ]
+  ]
+  
+end
+
+
+to setup-ant-hill
+  ask patches with [ pzcor = 0 ]
+     [ set pcolor random-float 2 + 35]
+  ask patch 0 0 0 [set pcolor red]
+  ask patches [set nest-config 200 - distancexyz 0 0 0]             ;;scent the ground to find way home
+  ;;ask patches [if pxcor != 0 and pycor = 0 [set pcolor white ]]   ;;make dividing line of inside and outside
+
+end
+
+to go
+  
+  ask turtles[
+    run task                 ;;have ants accomplish their objective
+  ]
+  
+  tick
+  
+  do-plots
+  
+end
+
+;; This is a turtle procedure
+to find-food
+  rt (random-normal 0 30)          ;;a walk governed by the normal distribution
+  fd 1
+  ;;if-else can-move? 0.5
+    ;;[fd 1 ]
+    ;;[rt 180 
+    ;;fd 1]
+  ;;if ycor <= 0 [                   ;;make sure the ant does not go in the ant pile
+    ;;rt 180
+    ;;fd 2.5
+  ;;]
+  
+  if pcolor = cyan OR pcolor = blue OR pcolor = sky[              ;;if the ant is on food pick it up
+    set food 1
+    set color green
+    set pcolor random-float 2 + 35
+  ]
+  
+  if food = 1[                    ;;now that the ant has food the objective is to return to the nest
+    set task "go-home"
+  ]    
+
+end
+
+to go-home
+  
+  uphill nest-config                        ;;follow the gradient to the nest
+  
+  if (food = 1) and (pcolor = red)[        ;;values that need to be set if the ant is returning from the outside
+    set food 0                              ;;drop the food that the ant is carrying
+    set time ticks                          ;;reset internal clock for decay calculations
+    set location "inside"                   ;;ant is now inside the nest
+    set zcor -1                             ;;make sure a random movement does not make ant leave so place in antpile
+    set scent 0                             ;;the scent needs to be reset from previous values
+    set task "interact"                     ;;now that the ant is inside the objective is to interact with other ants
+  ]
+  
+  if (exit = 1) and (pcolor = red)[        ;;values that need to be set for ants leaving the antpile
+    set location "outside"                  ;;the ants are now outside
+    set exit 0                              ;;clear the exit flag
+    set zcor 0.5                              ;;make sure ant really leave nest
+    set color red                           ;;reset color to red
+    set pitch 0
+    set roll 0
+    set task "find-food"                    ;;the new objective is to find food
+  ]
+      
+    
+end
+
+;;This is a turtle procedure
+to interact
+  right random 360 ;;(random-normal 0 30)                                    ;;this is a random normal walk
+  fd insidestep
+  tilt-down random 360
+  roll-right random 360
+  
+  ifelse [pcolor] of patches in-radius ( insidestep + 1 ) != 0
+    [;;right random 360
+     tilt-down random 360] ;;random 360
+     ;;roll-right random 360]
+    [fd insidestep]
+   
+  
+  
+  
+;;  if-else can-move? insidestep
+;;    [fd insidestep ]
+;;    [rt 180 
+;;      fd insidestep]                                                ;;step is smaller because in nest
+;;  if ycor >= 0 [                                             ;;keep the ant in the nest
+;;    rt 180
+;;    fd 1.25
+;;  ]
+  
+  if color = green[
+    set scent (coeff * (e ^ (-0.02 * (ticks - time + 1))))       ;;ants that return have a decay of scent
+    
+    if scent < 0.05 * coeff[                                     ;;if scent is 5% of the original leave the nest
+      set exit 1                                             ;;set exit flag
+      set task "go-home"                                     ;;head toward the exit of the nest
+    ]
+    
+    find-nearest-neighbor                                    ;;because the ant has a scent find those ants around it
+    
+    if nearest-neighbor != nobody[                           ;;if there is a neigbor around
+      ask nearest-neighbor [
+        set scent (scent + coeff)                            ;;increase the smell of it by original value
+      ]
+      
+    ]
+  ]
+  
+  if color = white[                                          ;;action that ant takes in nest 
+    set scent (scent * 0.98)                                 ;;will only have an impact if has had interaction with green ant
+    if scent > (thold * coeff) [          ;;Threashold       ;;if it breaks the threashold leave nest and find food
+      set exit 1                                             ;;set exit flag
+      set task "go-home"                                     ;;leave
+    ]
+  ]    
+  
+end
+
+
+to find-nearest-neighbor                                      ;;procedure to find the nearest neighbor
+  set antmates other turtles in-radius radius                 ;;see if any ants are in a radius of 2 around you
+  set nearest-neighbor min-one-of antmates [distance myself]  ;;of the ants around see which is the closest
+end
+
+
+
+
+
+to do-plots
+  set-current-plot "Counts"
+  set-current-plot-pen "Foragers"
+  plot count turtles with [color = red]
+  set-current-plot-pen "Inactive Ants"
+  plot count turtles with [color = white]
+end
+
+

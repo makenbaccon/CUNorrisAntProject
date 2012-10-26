@@ -1,0 +1,8 @@
+hey guys,
+
+I put in a really basic diffusion program where the ants (er, sharks) move around and smell to see what colors
+the other sharks are.  If there's a majority of one color (majority = number of red/black sharks > number of
+black/red sharks + 2), the shark changes to that color.  I have to get on a plane in about ten minutes so I'll
+leave it at that.
+
+Carrie

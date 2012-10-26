@@ -1,0 +1,71 @@
+
+breed [inactives inactive] ;;ants in antychamber that do not have a role
+
+inactives-own[
+  food-scent
+  ;; the initial value fo the food scent, helps to determine when they convert to a forager
+  ;; if it is not zero it is interacting with foragers
+  cumulative-food-scent
+  ;; the trigger for conversion to a forager, if this breaks the threshold theh it becomes a forager
+  food-direction
+  ;; an array of directions given by foragers, the one chosen will be the most frequent occuring
+  maint-scent
+  ;; same deal as food scent
+  cumulative-maint-scent
+  ;; once agian look up
+  
+  food-locationx
+  ;; these superceeded food-direction
+  food-locationy
+  
+]
+
+to inactives-task
+  
+  set cumulative-food-scent (cumulative-food-scent * 0.9)
+  
+  rt (random-normal 0 30)          ;;a walk governed by the normal distribution
+  fd 1
+  
+  if food-scent != 0
+  [
+    set cumulative-food-scent (cumulative-food-scent + food-scent)
+  ]
+  
+  if cumulative-food-scent > thold
+  [
+    set breed foragers
+    set color turquoise
+    set food? false
+    set forage-time ticks
+    stop
+  ]
+  
+  
+  set cumulative-maint-scent (cumulative-maint-scent * 0.9)
+  
+  rt (random-normal 0 30)          ;;a walk governed by the normal distribution
+  fd 1
+  
+  if maint-scent != 0
+  [
+    set cumulative-maint-scent (cumulative-maint-scent + maint-scent)
+  ]
+  
+  if cumulative-maint-scent > thold
+  [
+    uphill nest-config
+    
+    if (xcor = 0) and (ycor = 0)  ;;drop off at nest ;; now need to interact
+    [
+      set breed middens
+      set hidden? false
+      set hands-full? false
+      set color green
+    ]
+  ]  
+  
+
+end
+
+

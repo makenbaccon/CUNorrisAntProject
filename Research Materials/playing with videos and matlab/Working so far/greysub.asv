@@ -1,0 +1,18 @@
+
+
+
+% first convert to greyscale
+for frame = 2 : nFrames
+    disp(['I am detecting motion for frame ', num2str(frame), ' of ', num2str(nFrames)])
+    % iterate through the colomns
+    greymov(1,frame).cdata = rgb2grey(motmov(1,frame).cdata);
+end
+
+playvideo(o
+
+
+
+
+
+
+
