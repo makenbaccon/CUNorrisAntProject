@@ -1,0 +1,58 @@
+breed [arrays array]
+
+arrays-own
+[
+  
+  groupnumber
+  ;; this indicates which group the agent is in
+  
+]
+
+to arrays-task
+  
+  ;; Wander around inside a radius of the nestcenter:
+  arraymove
+  
+  ;; have a chance of randomly converting to a different group
+  arraychange
+  
+end
+
+to arraymove
+  
+  ;; if they are outside their nest then they need to go home 
+  ifelse distancexy (item groupnumber arraynestcenterx)
+  (item groupnumber arraynestcentery) > exploreradius
+  [
+    ;; Here I will just make them face their nest center and move in that
+    ;; direction because the patch operations do not like the lists
+    facexy (item groupnumber arraynestcenterx) (item groupnumber arraynestcentery)
+    fd 1
+  ]
+  ;; otherwise they just move aoround doing not much
+  [
+    rt (random-normal 0 30)
+    fd 0.5
+  ]
+  
+end
+
+to arraychange
+  
+  let r random 100
+  if r = 42
+  [
+    let new random numberofgroups
+    set groupnumber new
+  ]
+  ;; this will not be included for now
+  
+end
+
+to set-arrayed-defaults
+  set color blue
+  set shape "cow"
+  set xcor (item groupnumber arraynestcenterx)
+  set ycor (item groupnumber arraynestcentery)
+end
+  

@@ -1,0 +1,75 @@
+
+breed [player2spawns player2spawn]
+
+
+
+player2spawns-own[
+  countdown
+  xcord
+  ycord
+  opposinginfluance
+  nexttype
+]
+
+to player2spawns-task
+  
+  ;; make sure you havent been captured
+  if (opposinginfluance >= capturethreshold)[
+    getcaptured2
+    die
+  ]
+      
+  
+  ;; make sure you dont need to produce a unit
+  if (countdown = 0)[
+    spawnnext2
+    setnextcountdown2
+  ]
+        
+    
+  ;; iterate countdown and adjust opposingplayer influance
+  set countdown (countdown - 1)
+  set temp 0
+  ask turtles in-radius 3[
+    if (breed = player1soldiers)[
+      set temp (temp + soldierinfluance)
+    ]
+  ]
+  set opposinginfluance (opposinginfluance + temp)
+end
+
+to getcaptured2
+  hatch-player1spawns 1 [
+      setxy xcord ycord
+      set shape "circle"
+      set color player1color
+      set xcord xcor
+      set ycord ycor
+      set opposinginfluance 0
+    ]
+end
+
+to spawnnext2
+  set tempx xcor
+  set tempy ycor
+  if (nexttype = "soldier")[
+    hatch-player2soldiers 1 [
+      setxy tempx tempy         
+      set shape "person soldier"
+      set color player2color
+      set helth soldierhelth
+      set range soldierrange
+      set damage soldierdamage
+      ]
+    ]
+    
+    ;; put in the other types here later
+end
+
+to setnextcountdown2
+  if (nexttype = "soldier")[
+    set countdown soldiercountdown
+  ]
+  
+  ;; include others here later
+end

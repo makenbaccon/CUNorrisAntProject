@@ -1,0 +1,42 @@
+breed [homogens homogen]
+
+homogens-own
+[
+]
+
+to homogens-task
+  
+  ;; Wander around inside a radius of the nestcenter:
+  homogenemove
+  
+  ;; have a chance of randomly converting to a different group
+  homogenchange
+  
+end
+
+to homogenemove
+  
+  ;; if they are outside their nest then they need to go home 
+  ifelse distancexy homonestcenterx homonestcentery > exploreradius
+  [
+    uphill homogradiant
+  ]
+  ;; otherwise they just move aoround doing not much
+  [
+    rt (random-normal 0 30)
+    fd 0.5
+  ]
+  
+end
+
+to homogenchange
+  
+  ;; this will not be included for now
+  
+end
+
+to set-homogeneous-defaults
+  set color red
+  set shape "cow"
+end
+  

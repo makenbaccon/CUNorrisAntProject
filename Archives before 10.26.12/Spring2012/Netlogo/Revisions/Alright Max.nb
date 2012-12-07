@@ -1,0 +1,135 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[      3550,        125]
+NotebookOptionsPosition[      2835,         94]
+NotebookOutlinePosition[      3178,        109]
+CellTagsIndexPosition[      3135,        106]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Alright Max", "Title",
+ CellChangeTimes->{{3.5409193042291894`*^9, 3.540919306610326*^9}}],
+
+Cell["\<\
+Justin G. Baacke
+Ants Seminar\
+\>", "Subtitle",
+ CellChangeTimes->{{3.5409193103825417`*^9, 3.540919333065839*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Behaviour of a nest maintenence worker. \
+\>", "Section",
+ CellChangeTimes->{{3.5409193371350718`*^9, 3.5409193475006647`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Some explanitory background:", "Subsection",
+ CellChangeTimes->{{3.5409193669637775`*^9, 3.5409193719280615`*^9}}],
+
+Cell["\<\
+While there is allot of data about speed of reaction of nest maintenence \
+workers i cant seem to find how they are recruited, so I decided to pull a \
+213.\
+\>", "Text",
+ CellChangeTimes->{{3.540919376986351*^9, 3.5409194194157777`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["My model", "Subsection",
+ CellChangeTimes->{{3.5409194473513756`*^9, 3.5409194513516045`*^9}}],
+
+Cell["\<\
+At the beginning of the day after the trail patrollers have come back one ant \
+goes outside the nest as a nest maintenence worker
+
+If he finds a peice of crap he tries to move it
+\tIf it moves faster than a given speed he moves it
+\t\t (this wont be relevant yet but if we incorporate hannas stuff it will be \
+important
+\tIf he cant he goes and recruits an inactive to help him
+\t\tinactive assumes nest maintenence code
+\t\t
+While wandering around if a nest maintenence worker meets another nest \
+maintenence worker they have a 10% chance of going back to the nest and \
+becoming an inactive (get rid of excess)
+
+If a nest maintenence worker hasnt seen a forager for x number of ticks he \
+goes back inside. (signal the end of the day)\
+\>", "Text",
+ CellChangeTimes->{{3.5409195334563007`*^9, 3.5409197833695946`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Experiments I would like to propose:\
+\>", "Subsection",
+ CellChangeTimes->{{3.540919454282772*^9, 3.540919461884207*^9}}],
+
+Cell["\<\
+1. My camera experiment for which we place a camera above a nest for a day, \
+this can simply be done with the ones here at CU for simplicity
+2. Place a high frequency microphone near the ant nest.\
+\>", "Text",
+ CellChangeTimes->{{3.540919468254571*^9, 3.5409195237827473`*^9}}]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{707, 537},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"8.0 for Microsoft Windows (64-bit) (November 13, 2010)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 96, 1, 83, "Title"],
+Cell[678, 25, 125, 4, 77, "Subtitle"],
+Cell[CellGroupData[{
+Cell[828, 33, 137, 3, 71, "Section"],
+Cell[CellGroupData[{
+Cell[990, 40, 120, 1, 36, "Subsection"],
+Cell[1113, 43, 248, 5, 47, "Text"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1398, 53, 100, 1, 36, "Subsection"],
+Cell[1501, 56, 833, 18, 245, "Text"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2371, 79, 132, 3, 36, "Subsection"],
+Cell[2506, 84, 289, 5, 65, "Text"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+

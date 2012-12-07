@@ -2,21 +2,30 @@
 breed [inactives inactive] ;;ants in antychamber that do not have a role
 
 inactives-own[
+  colonynumber 
+  ;; This is the number indicating which colony the agent belongs to
+  
   food-scent
-  ;; the initial value fo the food scent, helps to determine when they convert to a forager
-  ;; if it is not zero it is interacting with foragers
+  ;; the initial value fo the food scent, helps to determine when they convert to a
+  ;; forager if it is not zero it is interacting with foragers
+  
   cumulative-food-scent
-  ;; the trigger for conversion to a forager, if this breaks the threshold theh it becomes a forager
+  ;; the trigger for conversion to a forager, if this breaks the threshold theh it 
+  ;; becomes a forager
+  
   food-direction
-  ;; an array of directions given by foragers, the one chosen will be the most frequent occuring
+  ;; an array of directions given by foragers, the one chosen will be the most 
+  ;; frequent occuring
+  
   maint-scent
   ;; same deal as food scent
+  
   cumulative-maint-scent
   ;; once agian look up
   
   food-locationx
-  ;; these superceeded food-direction
   food-locationy
+  ;; these superceeded food-direction
   
 ]
 

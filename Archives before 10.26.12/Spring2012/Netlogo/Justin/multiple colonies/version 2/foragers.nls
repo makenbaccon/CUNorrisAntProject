@@ -1,0 +1,227 @@
+breed [foragers forager] 
+;; This is the task an ant excicutes when it is foraging for food
+
+;; This is a list of the variables associated with a forager
+foragers-own[
+  colonynumber 
+  ;; which colony they belong too
+  
+  food?        
+  ;;reporter of food in hands
+  
+  food-direction 
+  ;; list of directions from interactions
+  
+  time 
+  ;; offset of ticks for forage-time
+  
+  scent 
+  ;; internal scent of food, passed on to inactives to increment their count
+  
+  antmates 
+  ;; an array of ants which this ant interacts with (determined by a radius)
+  
+  nearest-neighbor 
+  ;; closest of the ant mates
+  
+  forage-time 
+  ;; we only want to forage for so long so this is where we keep track of when to go home
+  
+  food-locationx 
+  food-locationy
+  ;; location we most recently found food
+]
+
+;; This is the task a forager runns on each tick
+to foragers-task
+  
+  ;; if a forager is hidden and does not have food it needs to go and forage again
+  if hidden? and not food?
+  [
+    ;; move towards the nest entrance
+    facexy (item colonynumber nestcenterx) (item colonynumber nestcentery)
+    fd 1
+    
+    ;; if I am at the nest I now need to drop off the food and start interacting
+    if (xcor = 0) and (ycor = 0)
+    [
+      set hidden? false
+      set-direction
+    ]
+  ]
+  
+  ;; If the forager was successfull and is now hidden it needs to interact
+  if hidden? and food?
+  [
+    forage-interact
+  ]
+  
+  ;; If the forager is outside looking for food it needs to continue to do so
+  ;; until the max search time is reached or it finds food
+  if not hidden?
+  [
+    ;; first look for food
+    forage-food
+    
+    ;; check to see if you have been out too long and if you have go home
+    if (ticks - forage-time) > 500
+    [
+      forage-home
+    ]
+  ]
+end
+    
+    
+;; Now I need a function for when the forager is looking for food or outside the 
+;; nest
+to forage-food
+  
+  ;; If the forager does not have food and is a ways away from where it last found
+  ;; food and is not out of time and is not on the hill then it should move towards
+  ;; where it last found food
+  if not food? and 
+    (distancexy food-locationx food-locationy) > 4 and
+    (ticks - forage-time) < 500 and
+    not (item colonynumber onhill?)
+  [
+    facexy food-locationx food-locationy
+    fd 0.1
+  ] 
+  
+  ;; in order to search more put a random walk into the mix
+  ifelse (item colonynumber onhill?)
+  [
+    rt (random-normal 0 5)
+    fd .5
+  ]
+  [
+    rt (random-normal 0 30)
+    fd .5
+  ]
+  
+  ;; if the patch has food run the home code
+  if food?
+  [
+    forage-home
+  ]
+end
+
+
+;; I will need a table of directions and a funcion to set them correctly
+to set-direction
+  if max food-direction = 1 [ set heading 0]
+  if max food-direction = 2 [ set heading 30]
+  if max food-direction = 3 [ set heading 60]
+  if max food-direction = 4 [ set heading 90]
+  if max food-direction = 5 [ set heading 120]
+  if max food-direction = 6 [ set heading 150]
+  if max food-direction = 7 [ set heading 180]
+  if max food-direction = 8 [ set heading 210]
+  if max food-direction = 9 [ set heading 240]
+  if max food-direction = 10 [ set heading 270]
+  if max food-direction = 11 [ set heading 300]
+  if max food-direction = 12 [ set heading 330]
+end
+  
+  
+;; this will be the forage home direction 
+to forage-home
+  
+  ;; first move toward the nest center
+  facexy food-locationx food-locationy
+  fd 1
+  
+  ;; If you are on the nest center patch go inside the nest 
+  if (xcor = (item colonynumber nestcenterx)) and (ycor = (item colonynumber nestcentery))
+  [
+    set hidden? true
+    set time ticks
+    if food?
+    [
+      set total-food replace-item colonynumber total-food (total-food + 1)
+      
+      if (item colonynumber total-food) = 3
+      [
+        set temp colonynumber
+        repeat 20
+        [
+          ask one-of inactives
+          [
+            if colonynumber = temp
+            [
+              set xcor (item colonynumber nestcenterx)
+              set ycor (item colonynumber nestcentery)
+              set breed middens
+              set hidden? false
+              set hands-full? false
+              set color green
+              set permenant? true
+            ]
+          ]
+        ]
+      ]
+    ]
+    
+    if not food?
+    [
+      set breed inactives 
+      set food-scent 0
+      set cumulative-food-scent 0
+      set food-direction []
+    ]
+  ]
+end
+
+to food-patch
+  set amountfood (amountfood - 1)
+  if amountfood = 0
+  [
+    set pcolor black
+  ]
+end
+  
+
+to forage-interact
+  
+  rt(random-normal 0 30)
+  fd 1
+  
+  set scent (coeff * (e ^ (-0.02 * (ticks - time + 1))))
+    
+  find-nearest-neighbor
+  
+  if nearest-neighbor != nobody
+  [
+    create-link-to nearest-neighbor
+    ask links
+    [
+      ask end2
+      [
+        set food-scent [scent] of other-end
+        set food-direction [food-direction] of other-end
+      ]
+    ]
+    
+    ask one-of links
+    [
+      die
+    ]
+  ]
+  
+  if scent < 0.05 * coeff
+  [
+    set food? false
+  ]
+end
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  

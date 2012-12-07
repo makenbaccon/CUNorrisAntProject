@@ -1,0 +1,39 @@
+breed [player2soldiers player2soldier]
+
+
+
+player2soldiers-own[
+  helth
+  range
+  damage
+  haveshot?
+  target
+]
+
+to player2soldiers-task
+  
+  if (helth < 0)[
+    die
+  ]
+  
+  ;;pick a target and shoot 
+  attack2
+  
+  ;;move if you want to
+  advance2
+  
+end
+
+to attack2
+  set temp target
+  ask turtles in-radius soldierrange[
+    if ( breed = player1soldiers and who = temp)[
+      set helth (helth - soldierdamage)
+    ]
+  ]
+  
+end
+
+to advance2
+  forward soldierspeed
+end

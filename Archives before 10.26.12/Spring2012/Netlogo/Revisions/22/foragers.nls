@@ -1,0 +1,210 @@
+breed [foragers forager] ;;foragers
+
+foragers-own[
+  food?        ;;reporter of food in hands
+  food-direction ;; list of directions from interactions
+  time
+  scent
+  antmates
+  nearest-neighbor
+  forage-time
+  food-locationx
+  food-locationy
+]
+
+
+to foragers-task
+  ;;show "I am running forager code"
+  
+  if hidden? and not food?
+  [
+    uphill nest-config
+    
+     if (xcor = 0) and (ycor = 0)  ;;drop off at nest ;; now need to interact
+      [
+        ;set found-food? false
+        ;set color yellow
+        set hidden? false
+        set-direction
+        ;;set cumulative-food-scent 0
+      ]   
+  ]
+  
+
+  
+  if hidden? and food?
+  [
+    forage-interact
+  ]
+  
+    if not hidden?
+  [
+    forage-food
+    
+    if (ticks - forage-time) > 500
+    [
+      forage-home
+    ]
+  ]
+  
+  
+  
+end
+
+
+to forage-food
+  
+  if not food? and (distancexy food-locationx food-locationy) > 4 and (ticks - forage-time) < 500 and not in-dish?
+  [
+    facexy food-locationx food-locationy
+    fd 0.1
+  ]
+  
+  ifelse in-dish?
+  [ 
+    rt (random-normal 0 5)
+    fd 0.5 
+  ]
+  [
+    rt (random-normal 0 30)          ;;a walk governed by the normal distribution
+    fd 0.5
+  ]
+  
+  if pcolor = cyan OR pcolor = sky OR pcolor = blue[              ;;if the ant is on food pick it up
+    set food? true
+    set color orange
+    food-patch
+    set food-locationx xcor
+    set food-locationy ycor
+    ;;set pcolor black
+  ]
+  
+  if food?
+  [
+    forage-home
+  ]
+  
+  
+  
+end
+
+
+;for foragers ;; use for each RECODE max
+to set-direction
+
+;if max food-direction = 1 [ set heading 15]
+;if max food-direction = 2 [ set heading 45]
+;if max food-direction = 3 [ set heading 75]
+;if max food-direction = 4 [ set heading 105]
+;if max food-direction = 5 [ set heading 135]
+;if max food-direction = 6 [ set heading 165]
+;if max food-direction = 7 [ set heading 195]
+;if max food-direction = 8 [ set heading 225]
+;if max food-direction = 9 [ set heading 255]
+;if max food-direction = 10 [ set heading 285]
+;if max food-direction = 11 [ set heading 315]
+;if max food-direction = 12 [ set heading 345]
+
+if max food-direction = 1 [ set heading 0]
+if max food-direction = 2 [ set heading 30]
+if max food-direction = 3 [ set heading 60]
+if max food-direction = 4 [ set heading 90]
+if max food-direction = 5 [ set heading 120]
+if max food-direction = 6 [ set heading 150]
+if max food-direction = 7 [ set heading 180]
+if max food-direction = 8 [ set heading 210]
+if max food-direction = 9 [ set heading 240]
+if max food-direction = 10 [ set heading 270]
+if max food-direction = 11 [ set heading 300]
+if max food-direction = 12 [ set heading 330]
+
+end
+
+to forage-home
+  
+  uphill nest-config
+  
+   if (xcor = 0) and (ycor = 0)  ;;drop off at nest ;; now need to interact
+    [
+      ;set found-food? false
+      ;set color yellow
+      set hidden? true
+      set time ticks
+      if food?
+      [
+        set total-food total-food + 1
+        
+        if total-food = 3
+        [
+          repeat 20
+          [
+            ask one-of inactives 
+            [
+              set xcor 0
+              set ycor 0 
+              set breed middens
+              set hidden? false
+              set hands-full? false  ;; 1 0 status of if carrying object
+              set color green
+            ]           
+          ]
+        ]
+      ]
+      
+      if not food?
+      [
+        set breed inactives
+        set food-scent 0
+        set cumulative-food-scent 0
+        set food-direction []
+      ]
+      
+    ]  
+  
+end
+
+to food-patch
+  set foodp (foodp - 1)
+  if foodp = 0
+  [
+    set pcolor black
+  ] 
+  
+end
+
+
+
+
+to forage-interact
+  
+  rt (random-normal 0 30)
+  fd 1
+  
+  set scent (coeff * (e ^ (-0.02 * (ticks - time + 1))))       ;;ants that return have a decay of scent
+  
+    find-nearest-neighbor
+  
+  if nearest-neighbor != nobody[                           ;;if there is a neigbor around
+   if  is-inactive? nearest-neighbor
+   [
+    create-link-to nearest-neighbor
+    ask links [ask end2 [set food-scent [scent] of other-end] ]
+    ask links [ask end2 [set food-direction [food-direction] of other-end]]
+    
+    ask links [ask end2 [set food-locationx [food-locationx] of other-end] ]
+    ask links [ask end2 [set food-locationy [food-locationy] of other-end] ]
+    
+    ;;ask link myself nearest-neighbor [die]
+    ;;ask my-links with [ other-end = nearest-neighbor ] [ die ] 
+    ask one-of links [die]
+   ]
+        
+  ]
+  
+   if scent < 0.05 * coeff[                                     ;;if scent is 5% of the original leave the nest
+     set food? false                                            ;;set exit flag
+                                         ;;head toward the exit of the nest
+    ]
+
+  
+end

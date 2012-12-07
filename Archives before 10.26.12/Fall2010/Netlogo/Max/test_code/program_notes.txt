@@ -1,0 +1,16 @@
+when all food is gone --> terminate
+keep food / or remove food
+
+
+behavior space parameters
+
+["diffusion-rate" [0 10 100]] 		[0 10 100]
+["sensitive" [0 10 50]]       		
+["return-wiggle" [true false]]		[true flase]
+["amount-of-wiggle" [1 10 100]] 	[1 10 100]
+["plot?" false]			
+["population" [1 10 200]]		[1 10 200]
+["Chem-Upper-Threshold" [2 2 20]]	[2 2 20]
+["Chem-Low-Threshold" [0.1 0.1 2]]	[0
+["evaporation-rate" [0 1 10]]
+
