@@ -1,8 +1,0 @@
-to find-flockmates   
-  set flockmates other turtles in-radius vision
-end
-
-to find-nearest-neighbor  
-  set nearest-neighbor min-one-of flockmates [distance myself]
-end
- 

@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Extension-Name: multiview
-NetLogo-Extension-API-Version: 4.1
-Class-Manager: org.nlogo.extensions.multiview.MultiView
